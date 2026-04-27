@@ -9,6 +9,7 @@ Tallytop is a fork of [Vesktop](https://github.com/Vencord/Vesktop).
 You can join our [discord server](https://equicord.org/discord) for commits, changes, chat or even support.<br></br>
 
 **Main features**:
+
 - Equicord preinstalled
 - Much more lightweight and faster than the official Discord app
 - Linux Screenshare with sound & wayland
@@ -22,31 +23,34 @@ You can join our [discord server](https://equicord.org/discord) for commits, cha
 - arRPC-bun with debug logging support https://github.com/Creationsss/arrpc-bun
 
 **Not fully Supported**:
+
 - Global Keybinds (Windows/macOS - use command-line flags on Linux instead)
 
 ## Tallytop Arguments
+
 > [!NOTE]
 > For the full list of supported flags and how to apply them, see the
-[Tips & Tricks](https://tallytop.org/wiki/linux/tips/) page on the wiki!
+> [Tips & Tricks](https://tallytop.org/wiki/linux/tips/) page on the wiki!
 
 ### Quick reference
 
-| Flag                            | Description                             |
-|---------------------------------|-----------------------------------------|
-| `--ozone-platform=wayland`      | Force native Wayland                    |
-| `--ozone-platform=x11`          | Force XWayland                          |
-| `--no-sandbox`                  | Disable Chromium sandbox (use with caution) |
-| `--force_high_performance_gpu`  | Prefer discrete GPU                     |
-| `--start-minimized`             | Launch minimized to tray                |
-| `--toggle-mic`                  | Toggle mic (bind to shortcuts)          |
-| `--toggle-deafen`               | Toggle deafen (bind to shortcuts)       |
-| `--toggle-vad`                  | Toggle Voice Activity Detection (Voice Activity <-> Push To Talk) |
+| Flag                           | Description                                                       |
+| ------------------------------ | ----------------------------------------------------------------- |
+| `--ozone-platform=wayland`     | Force native Wayland                                              |
+| `--ozone-platform=x11`         | Force XWayland                                                    |
+| `--no-sandbox`                 | Disable Chromium sandbox (use with caution)                       |
+| `--force_high_performance_gpu` | Prefer discrete GPU                                               |
+| `--start-minimized`            | Launch minimized to tray                                          |
+| `--toggle-mic`                 | Toggle mic (bind to shortcuts)                                    |
+| `--toggle-deafen`              | Toggle deafen (bind to shortcuts)                                 |
+| `--toggle-vad`                 | Toggle Voice Activity Detection (Voice Activity <-> Push To Talk) |
 
 ### Persistent flags
 
 Add flags to `${XDG_CONFIG_HOME}/tallytop-flags.conf` — one per line, lines starting with `#` are comments.
 
 ## Installing
+
 Check the [Releases](https://github.com/Equicord/Tallytop/releases) page
 
 OR
@@ -57,6 +61,7 @@ Check The Downloads from the [website](https://tallytop.org/install)
 
 [![Tallytop](https://img.shields.io/badge/AVAILABLE_ON_THE_AUR-333232?style=for-the-badge&logo=arch-linux&logoColor=0F94D2&labelColor=%23171717)](https://aur.archlinux.org/packages?O=0&K=tallytop)
 <br>
+
 <!-- <a href="https://flathub.org/apps/io.github.equicord.tallytop">
   <img src="https://flathub.org/api/badge?svg" alt="Download on Flathub" style="width:220px; height:auto;">
 </a> -->
@@ -72,6 +77,7 @@ Below you can find unofficial packages created by the community. They are not of
 ## Building from Source
 
 You need to have the following dependencies installed:
+
 - [Git](https://git-scm.com/downloads)
 - [Bun](https://bun.sh)
 
@@ -102,6 +108,7 @@ bun package:dir
 This is a small C++ helper library Tallytop uses on Linux to emit D-Bus events. By default, prebuilt binaries for x64 and arm64 are used.
 
 If you want to build it from source:
+
 1. Install build dependencies:
     - Debian/Ubuntu: `apt install build-essential python3 curl pkg-config libglib2.0-dev`
     - Fedora: `dnf install @c-development @development-tools python3 curl pkgconf-pkg-config glib2-devel`
