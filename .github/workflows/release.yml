@@ -9,6 +9,10 @@ on:
 permissions:
     contents: write
 
+env:
+    FORCE_COLOR: true
+    GH_TOKEN: ${{ github.token }}
+
 jobs:
     build:
         runs-on: ${{ matrix.os }}
