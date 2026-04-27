@@ -97,11 +97,6 @@ jobs:
                   VERSION="${TAG_NAME#v}"
                   echo "version=$VERSION" >> "$GITHUB_OUTPUT"
 
-            - name: Update package.json version
-              run: |
-                  jq ".version = \"${{ steps.tag.outputs.version }}\"" package.json > tmp.json
-                  mv tmp.json package.json
-
             - name: Create PR
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -110,9 +105,15 @@ jobs:
                   git config user.name "github-actions"
                   git config user.email "github-actions@github.com"
 
-                  git checkout -b "$BRANCH"
-                  git commit -am "fix: match version to tag v${{ steps.tag.outputs.version }}"
-                  git push origin "$BRANCH"
+                  git fetch origin main
+                  git checkout -b "$BRANCH" origin/main
+
+                  jq ".version = \"${{ steps.tag.outputs.version }}\"" package.json > tmp.json
+                  mv tmp.json package.json
+
+                  git add package.json
+                  git commit -m "fix: match version to tag v${{ steps.tag.outputs.version }}"
+                  git push -u origin "$BRANCH"
 
                   gh pr create \
                     --title "Fix version mismatch (v${{ steps.tag.outputs.version }})" \
