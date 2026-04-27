@@ -7,7 +7,12 @@
 import { Settings } from "./settings";
 
 function isValidColor(color: CSSStyleValue | undefined): color is CSSUnparsedValue & { [0]: string } {
-    return color instanceof CSSUnparsedValue && typeof color[0] === "string" && CSS.supports("color", color[0]);
+    return (
+        color instanceof CSSUnparsedValue &&
+        typeof color[0] === "string" &&
+        "supports" in CSS &&
+        CSS.supports("color", color[0])
+    );
 }
 
 // https://gist.github.com/earthbound19/e7fe15fdf8ca3ef814750a61bc75b5ce

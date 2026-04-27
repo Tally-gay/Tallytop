@@ -85,7 +85,7 @@ function initMenuBar(win: BrowserWindow) {
 
     const subMenu = [
         {
-            label: "About Equibop",
+            label: "About Tallytop",
             click: createAboutWindow
         },
         {
@@ -96,14 +96,14 @@ function initMenuBar(win: BrowserWindow) {
                 app.relaunch();
                 app.quit();
             },
-            toolTip: "Equibop will automatically restart after this operation"
+            toolTip: "Tallytop will automatically restart after this operation"
         },
         {
-            label: "Reset Equibop",
+            label: "Reset Tallytop",
             async click() {
                 await clearData(win);
             },
-            toolTip: "Equibop will automatically restart after this operation"
+            toolTip: "Tallytop will automatically restart after this operation"
         },
         {
             label: "Relaunch",
@@ -171,7 +171,7 @@ function initMenuBar(win: BrowserWindow) {
 
     const menuItems = [
         {
-            label: "Equibop",
+            label: "Tallytop",
             role: "appMenu",
             submenu: subMenu.filter(isTruthy)
         },
@@ -280,7 +280,7 @@ function initStaticTitle(win: BrowserWindow) {
 
     addSettingsListener("staticTitle", enabled => {
         if (enabled) {
-            win.setTitle("Equibop");
+            win.setTitle("Tallytop");
             win.on("page-title-updated", listener);
         } else {
             win.off("page-title-updated", listener);
@@ -376,7 +376,7 @@ function buildBrowserWindowOptions(): BrowserWindowConstructorOptions {
     }
 
     if (staticTitle) {
-        options.title = "Equibop";
+        options.title = "Tallytop";
     }
 
     if (process.platform === "darwin") {
@@ -474,14 +474,14 @@ export async function createWindows() {
     const startMinimized = CommandLine.values["start-minimized"];
 
     let splash: BrowserWindow | undefined;
-    if (Settings.store.enableSplashScreen !== false) {
+    if (!Settings.store.enableSplashScreen) {
         splash = await createSplashWindow(startMinimized);
 
         // SteamOS letterboxes and scales it terribly, so just full screen it
         if (isDeckGameMode) splash.setFullScreen(true);
         addSplashLog();
     }
-
+    // return;
     addSplashLog();
     await ensureVencordFiles();
     runVencordMain();

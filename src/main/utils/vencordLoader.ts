@@ -37,16 +37,20 @@ export async function githubGet(endpoint: string) {
 }
 
 export async function downloadVencordAsar() {
-    await downloadFile(
-        "https://github.com/Equicord/Equicord/releases/latest/download/equibop.asar",
-        VENCORD_DIR,
-        {},
-        { retryOnNetworkError: true }
-    );
+    try {
+        await downloadFile(
+            "https://github.com/Equicord/Equicord/releases/latest/download/equibop.asar",
+            VENCORD_DIR,
+            {},
+            { retryOnNetworkError: true }
+        );
+    } catch (error) {
+        console.log(VENCORD_DIR);
+    }
 }
 
 export function isValidVencordInstall(dir: string) {
-    return existsSync(join(dir, "equibop/main.js"));
+    return existsSync(join(dir, "tallytop/main.js"));
 }
 
 export async function ensureVencordFiles() {

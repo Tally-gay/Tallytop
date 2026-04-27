@@ -74,7 +74,7 @@
             word-break: break-word;
             padding: 0 16px;
             position: absolute;
-            font-size: 14px
+            font-size: 14px;
         }
 
         p {
@@ -82,17 +82,30 @@
         }
 
         img {
-            width: 128px;
-            height: 128px;
-            object-fit: contain;
+            max-width: 256px;
+            max-height: 164px;
+            height: auto;
+            width: auto;
+            border-radius: 0.5em;
+        }
+
+        #q {
+            font-size: 0.8rem;
+            position: absolute;
+            bottom: 0.5em;
+            left: 50%;
+            transform: translateX(-50%);
+            width: calc(100% - 2em);
+            color: var(--fg-semi-trans);
         }
     </style>
 </head>
 
 <body>
     <div class="wrapper">
-        <img draggable="false" src="equibop://assets/splash" alt="" role="presentation" />
-        <p>Loading Equibop...</p>
+        <img draggable="false" src="" alt="" role="presentation" />
+        <p id="loading">Loading Tallytop...</p>
+        <p id="q"></p>
         <p class="message"></p>
 
         <div id="progress-section">
@@ -106,9 +119,133 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", () => {
-        const messageElement = document.querySelector('.message');
+        const messageElement = document.querySelector(".message");
         VesktopSplashNative.onUpdateMessage(message => {
             messageElement.textContent = message;
-        })
+        });
     });
+
+    const media = `arduino-running.gif
+    iamCLOUD.gif
+    pinterestdownloader.com-1741387506.677159-ezgif.com-video-to-gif-converter.gif
+    bite.gif
+    i-may-be-dumb-dumb-moment.gif
+    poweron.gif
+    burrito.gif
+    jamie-paige-birdbrain.gif
+    RDT_20260331_1914207558525626554202445.gif
+    but-here_27s-the-stapler-cat-meme.gif
+    JLIqliv.gif
+    sakuya-touhou.gif
+    C418E6A3-FA02-4A84-A3D0-9308EEB0BA35.gif
+    kasane-teto-teto-kasane.gif
+    sea-lion.gif
+    cat-flying.gif
+    kicker.gif
+    shiggy.gif
+    cat-hire.gif
+    lebains.gif
+    spagari.gif
+    cat-insane.gif
+    menhera-roll.gif
+    speed.gif
+    cat-lost-mind.gif
+    menhera-sip.gif
+    talkingtotally.gif
+    cat-soggy-cat-wet.gif
+    menhera-spin.gif
+    tallyscarey.gif
+    dancing-cat-dance.gif
+    menhera-table.gif
+    the-beast-is-ferocious-ferocious.gif
+    deredere-hearts.gif
+    mikiwalkin.gif
+    watercoasting.gif
+    dornet-dornetuwu.gif
+    MYPENIS.gif
+    wawa.gif
+    glungus-cat.gif
+    neiguex-based.gif
+    yunayu-crayons.gif
+    HAPPYMIKI.gif
+    pet-glungus.gif
+    himekwo-himeko.gif
+    petpet.gif
+    `
+        .split("\n")
+        .filter(Boolean)
+        .map(a => a.trim());
+
+    const randomMedia = media[Math.floor(Math.random() * media.length)];
+    const gif = document.querySelector("img");
+    gif.src = `../gif/${randomMedia}`;
+
+    if (Math.random() < 0.1) {
+        document.getElementById("loading").textContent = "MENDY!!!!!";
+    }
+
+    const quotes = [
+        "Never stop doing j.",
+        "erfel;l';;',waerf f;'wr qf",
+        "mmjmmmjnmjn mjn mkjnm,mnbnmjnmjnjnjnmjmjh",
+        "aDo not nelon that",
+        "waltermelon",
+        "me comare tus faldas",
+        "die tally macht miau",
+        "christmas withuot hrt is cismas",
+        "NEGLIGENT HOMICIDE WITH A MOTOR VEHICLE",
+        "i will drive my furry ass to Australia",
+        "not a number is a number",
+        "do your eyes not support jpg export?",
+        "THE GOVERNMENT IS TRYING TO FEMINIZE US WITH THE VACCINE!!!",
+        "New Jersey is the best state ever! I want to live there and it's so cool. I will never, ever, ever, ever, ever, ever say otherwise. I love NJ with all my heart ❤️",
+        "why does my chat bar have so many children",
+        "watch .3. y-y-yo tonye :3 mf",
+        "mewmrrpurrrrow mewmraowmewmraowmrow meomewmraowmew meomraowmew mraowmraowmew nyamrrpurrmew raowpurr mrowmraow mewmraowmewmrrpurr raowmewmrow",
+        "if pansexual was a box i would eat it because i eat boxes",
+        "hold on let me find my arm i think i left it somewhere",
+        "ill eat your cpu cores",
+        "i am a murderous housewife",
+        "d--==-';",
+        "youre a calibri knockoff",
+        "shut up before i open a nature vally bar on your bed",
+        "mrow nya nya amroe mrrp mrw mew mew meep :333!!!!",
+        "prrr uwu nya mrow meow mew :3 nya uwu",
+        "i just watched marge Simpson bowl her newborn into the pins",
+        "Jim rayne",
+        "do j",
+        "brb pissing",
+        "there are 324 million genders and every time you complain we add 7 more",
+        "john numeral",
+        "i am the senate",
+        "I AM NOT PRETTY",
+        "IM NOT CUTE",
+        "who goes there",
+        "make sure to eat your tide pods",
+        "pregnancy update keeps getting aborted",
+        "Uploaded touch_your_insides.png",
+        "my claws are really sharp",
+        "I EAT GLITTER GLUE",
+        "i am the sapphic gooner jedi",
+        "KzEwThe niiCKNAME",
+        "Hhh b hbgfvb I CAN'T TAKE IT ANYMORE PLS TREAT ME LIKE A PUPPY FOREVER",
+        "IM NOT A FUCKING BATTERY",
+        "Tally house!!",
+        "getting shot is now sex",
+        "naahhhh what's mystery Michael doing???? 💀☠️☠️☠️☠️☠️☠️",
+        "being cute isn't your choice, it's mine. you're cute now.",
+        "Me when.. me when.. me when she..",
+        "MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK MUCK",
+        "stable? that's for horses.",
+        "You have very strong toes",
+        "NO OKAY FIRST OF ALL IM NOT PREGNANT",
+        "lesbial lesban lesbain girls",
+        "In Tallycord - 38,835 problems found, Working on Untitled-1:520,840:15",
+        "and we create slurs for certain ethnicities",
+        "wind deniers must be like 'must've been the uhm uhhh uhmmmmm'",
+        "Back in the day I could eat 11 sausages for dinner",
+        "i really dont want to sound weird but your belly button is one of my biggest interests i dont even know what the fuck i'd call it"
+    ];
+    const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+    document.getElementById("q").textContent = randomQuote;
 </script>

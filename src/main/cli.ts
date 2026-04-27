@@ -102,7 +102,7 @@ const extraOptions = {
     "ozone-platform": {
         hidden: process.platform !== "linux",
         type: "string",
-        description: "Whether to run Equibop in Wayland or X11 (XWayland)",
+        description: "Whether to run Tallytop in Wayland or X11 (XWayland)",
         options: ["x11", "wayland"]
     }
 } satisfies Record<string, Option>;
@@ -123,7 +123,7 @@ export async function checkCommandLineForRepair() {
     if (!repair) return false;
 
     const { State } = await import("./settings");
-    if (State.store.equicordDir) {
+    if (State.store.tallycordDir) {
         console.error("Cannot repair: using custom Equicord directory. Remove it in settings first.");
         process.exit(1);
     }
@@ -140,13 +140,13 @@ export function checkCommandLineForHelpOrVersion() {
     const { help, version } = CommandLine.values;
 
     if (version) {
-        console.log(`Equibop v${app.getVersion()}`);
+        console.log(`Tallytop v${app.getVersion()}`);
         app.exit(0);
     }
 
     if (help) {
         const base = stripIndent`
-            Equibop v${app.getVersion()}
+            Tallytop v${app.getVersion()}
 
             Usage: ${basename(process.execPath)} [options] [url]
 
@@ -210,7 +210,7 @@ function checkCommandLineForToggleCommands() {
         app.exit(0);
     }
 
-    console.error("Equibop is not running. Toggle commands require a running instance.");
+    console.error("Tallytop is not running. Toggle commands require a running instance.");
     app.exit(1);
 }
 
@@ -228,7 +228,7 @@ function checkCommandLineForQueryCommands() {
         : getVoiceChannelName
           ? IpcCommands.QUERY_VOICE_CHANNEL_NAME
           : IpcCommands.QUERY_CALL_DURATION;
-    const responseFile = join(tmpdir(), `equibop-query-${Date.now()}-${process.pid}.tmp`);
+    const responseFile = join(tmpdir(), `tallytop-query-${Date.now()}-${process.pid}.tmp`);
 
     if (!app.requestSingleInstanceLock({ IS_DEV, query, responseFile })) {
         isQueryInstance = true;
@@ -259,7 +259,7 @@ function checkCommandLineForQueryCommands() {
         return true;
     }
 
-    console.error("Equibop is not running. Query commands require a running instance.");
+    console.error("Tallytop is not running. Query commands require a running instance.");
     app.exit(1);
 }
 
@@ -328,10 +328,10 @@ function checkForSecondInstance() {
 
     if (!app.requestSingleInstanceLock({ IS_DEV })) {
         if (IS_DEV) {
-            console.log("Equibop is already running. Quitting previous instance...");
+            console.log("Tallytop is already running. Quitting previous instance...");
             return;
         } else {
-            console.log("Equibop is already running. Quitting...");
+            console.log("Tallytop is already running. Quitting...");
             app.exit(0);
         }
     }

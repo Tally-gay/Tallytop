@@ -39,7 +39,7 @@ export async function createSplashWindow(startMinimized = false) {
     const { splashBackground, splashColor, splashTheming, splashProgress, splashPixelated } = Settings.store;
 
     const isDark = nativeTheme.shouldUseDarkColors;
-    const systemBg = isDark ? "hsl(223 6.7% 20.6%)" : "white";
+    const systemBg = isDark ? "hsl(275, 11%, 21%)" : "white";
     const systemFg = isDark ? "white" : "black";
     const systemFgSemiTrans = isDark ? "rgb(255 255 255 / 0.2)" : "rgb(0 0 0 / 0.2)";
 
@@ -61,22 +61,6 @@ export async function createSplashWindow(startMinimized = false) {
 
     if (splashPixelated) {
         splash.webContents.insertCSS(`img { image-rendering: pixelated; }`);
-    }
-
-    const customSplashPath = join(DATA_DIR, "userAssets", "splash");
-    const hasCustomSplash = await fileExistsAsync(customSplashPath);
-
-    if (!hasCustomSplash) {
-        splash.webContents.insertCSS(`
-            @keyframes spin {
-                from { transform: rotate(0deg); }
-                to { transform: rotate(-360deg); }
-            }
-
-            img {
-                animation: spin 2s linear infinite;
-            }
-        `);
     }
 
     if (splashProgress) {

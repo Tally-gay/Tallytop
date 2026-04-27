@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Tallytop
+GenericName=Internet Messenger
+Type=Application
+Exec=tallytop %U
+Icon=org.equicord.tallytop
+Categories=Network;InstantMessaging;Chat;
+Keywords=discord;vencord;electron;chattallytop;
+MimeType=x-scheme-handler/discord;
+StartupWMClass=tallytop

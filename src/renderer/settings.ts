@@ -39,7 +39,7 @@ interface TState {
     };
 }
 
-const stateKey = "EquibopState";
+const stateKey = "TallytopState";
 
 const currentState: TState = (() => {
     const stored = localStorage.getItem(stateKey);

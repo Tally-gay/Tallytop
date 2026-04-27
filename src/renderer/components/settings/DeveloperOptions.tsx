@@ -29,7 +29,7 @@ function openDeveloperOptionsModal(settings: Settings) {
         <ModalRoot {...props} size={ModalSize.MEDIUM}>
             <ModalHeader>
                 <BaseText size="lg" weight="semibold" tag="h3" style={{ flexGrow: 1 }}>
-                    Equibop Developer Options
+                    Tallytop Developer Options
                 </BaseText>
                 <ModalCloseButton onClick={props.onClose} />
             </ModalHeader>
@@ -56,13 +56,13 @@ function openDeveloperOptionsModal(settings: Settings) {
 
 const EquicordLocationPicker: SettingsComponent = ({ settings }) => {
     const forceUpdate = useForceUpdater();
-    const usingCustomEquicordDir = VesktopNative.fileManager.isUsingCustomVencordDir();
+    const usingCustomtallycordDir = VesktopNative.fileManager.isUsingCustomVencordDir();
 
     return (
         <>
             <Paragraph>
                 Equicord files are loaded from{" "}
-                {usingCustomEquicordDir ? (
+                {usingCustomtallycordDir ? (
                     <TextButton
                         variant="link"
                         onClick={e => {
@@ -80,13 +80,13 @@ const EquicordLocationPicker: SettingsComponent = ({ settings }) => {
                 <Button
                     size={"small"}
                     onClick={async () => {
-                        const choice = await VesktopNative.fileManager.selectEquicordDir();
+                        const choice = await VesktopNative.fileManager.selecttallycordDir();
                         switch (choice) {
                             case "cancelled":
                                 break;
                             case "ok":
                                 Toasts.show({
-                                    message: "Equicord install changed. Fully restart Equibop to apply.",
+                                    message: "Equicord install changed. Fully restart Tallytop to apply.",
                                     id: Toasts.genId(),
                                     type: Toasts.Type.SUCCESS
                                 });
@@ -109,7 +109,7 @@ const EquicordLocationPicker: SettingsComponent = ({ settings }) => {
                     size={"small"}
                     variant="dangerPrimary"
                     onClick={async () => {
-                        await VesktopNative.fileManager.selectEquicordDir(null);
+                        await VesktopNative.fileManager.selecttallycordDir(null);
                         forceUpdate();
                     }}
                 >
