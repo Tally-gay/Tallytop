@@ -84,7 +84,7 @@ jobs:
 
     fix-version:
         needs: precheck
-        if: ${{ needs.precheck.result == 'failure' }}
+        if: ${{ always() && needs.precheck.result == 'failure' }}
         runs-on: ubuntu-latest
 
         steps:
