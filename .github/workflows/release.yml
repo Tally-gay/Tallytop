@@ -2,8 +2,8 @@ name: Release
 
 on:
     push:
-        tags:
-            - v*
+        branches:
+            - main
     workflow_dispatch:
 
 permissions:
@@ -15,40 +15,55 @@ env:
     GH_TOKEN: ${{ github.token }}
 
 jobs:
-    precheck:
+    version:
         runs-on: ubuntu-latest
         outputs:
-            version: ${{ steps.version_check.outputs.version }}
-            tag_name: ${{ steps.version_check.outputs.tag_name }}
+            version: ${{ steps.get.outputs.version }}
+            tag: ${{ steps.get.outputs.tag }}
+            exists: ${{ steps.check.outputs.exists }}
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Get version
+              id: get
+              run: |
+                  VERSION=$(jq -r .version package.json)
+                  TAG="v$VERSION"
+                  echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+                  echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+            - name: Check if tag exists
+              id: check
+              run: |
+                  if git show-ref --tags --verify --quiet "refs/tags/${{ steps.get.outputs.tag }}"; then
+                    echo "exists=true" >> "$GITHUB_OUTPUT"
+                  else
+                    echo "exists=false" >> "$GITHUB_OUTPUT"
+                  fi
+    create-tag:
+        needs: version
+        if: ${{ needs.version.outputs.exists == 'false' }}
+        runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v4
 
-            - name: Validate tag and package version
-              id: version_check
+            - name: Create and push tag
               run: |
-                  CURRENT=$(jq -r .version package.json)
-                  TAG_NAME="${GITHUB_REF#refs/tags/}"
-                  TAG_VERSION="${TAG_NAME#v}"
+                  TAG="${{ needs.version.outputs.tag }}"
+                  git config user.name "github-actions"
+                  git config user.email "github-actions@github.com"
 
-                  if [ -z "$TAG_NAME" ]; then
-                    echo "Not a tag ref"
-                    exit 1
-                  fi
-
-                  if [ "$TAG_VERSION" != "$CURRENT" ]; then
-                    echo "Tag version $TAG_VERSION does not match package.json version $CURRENT"
-                    echo "version=$CURRENT" >> "$GITHUB_OUTPUT"
-                    echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
-                    exit 1
-                  fi
-
-                  echo "version=$CURRENT" >> "$GITHUB_OUTPUT"
-                  echo "tag_name=$TAG_NAME" >> "$GITHUB_OUTPUT"
+                  git tag "$TAG"
+                  git push origin "$TAG"
 
     build:
-        needs: precheck
+        needs: [version, create-tag]
         runs-on: ${{ matrix.os }}
+        if: ${{ needs.version.outputs.exists == 'false' }}
 
         strategy:
             matrix:
@@ -82,79 +97,18 @@ jobs:
                   name: dist-${{ matrix.platform }}
                   path: dist/**
 
-    fix-version:
-        needs: precheck
-        if: ${{ always() && needs.precheck.result == 'failure' }}
-        runs-on: ubuntu-latest
-
-        steps:
-            - uses: actions/checkout@v4
-
-            - name: Extract tag version
-              id: tag
-              run: |
-                  TAG_NAME="${GITHUB_REF#refs/tags/}"
-                  VERSION="${TAG_NAME#v}"
-                  echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-
-            - name: Create PR
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  BRANCH="fix/version-${{ steps.tag.outputs.version }}"
-                  git config user.name "github-actions"
-                  git config user.email "github-actions@github.com"
-
-                  git fetch origin main
-                  git checkout -b "$BRANCH" origin/main
-
-                  jq ".version = \"${{ steps.tag.outputs.version }}\"" package.json > tmp.json
-                  mv tmp.json package.json
-
-                  git add package.json
-                  git commit -m "fix: match version to tag v${{ steps.tag.outputs.version }}"
-                  git push -u origin "$BRANCH"
-
-                  gh pr create \
-                    --title "Fix version mismatch (v${{ steps.tag.outputs.version }})" \
-                    --body "fix: package.json version updated to match tag." \
-                    --base main \
-                    --head "$BRANCH"
-
     release:
-        needs: build
+        needs: [build, version]
+        if: ${{ needs.version.outputs.exists == 'false' }}
         runs-on: ubuntu-latest
 
         steps:
             - uses: actions/checkout@v4
 
-            - name: Download release artifacts
-              uses: actions/download-artifact@v4
-              with:
-                  path: release-assets
-
-            - name: Create release if not exists
-              shell: bash
+            - name: Create release
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  TAG_NAME="${GITHUB_REF#refs/tags/}"
-
-                  if ! gh release view "$TAG_NAME" >/dev/null 2>&1; then
-                    gh release create "$TAG_NAME" \
-                      --title "$TAG_NAME" \
-                      --generate-notes \
-                      --latest
-                  fi
-
-            - name: Upload artifacts to GitHub Release
-              shell: bash
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  TAG_NAME="${GITHUB_REF#refs/tags/}"
-
-                  find release-assets -type f | while IFS= read -r file; do
-                    echo "Uploading $file..."
-                    gh release upload "$TAG_NAME" "$file" --clobber
-                  done
+                  gh release create "${{ needs.version.outputs.tag }}" \
+                    --generate-notes \
+                    --latest
