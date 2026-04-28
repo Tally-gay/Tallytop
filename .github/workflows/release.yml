@@ -122,4 +122,11 @@ jobs:
               env:
                   GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
               run: |
-                  find artifacts -type f -exec gh release upload "${{ needs.version.outputs.tag }}" {} \;
+                  for file in artifacts/*/*; do
+                    if [ -f "$file" ]; then
+                      echo "Uploading $file..."
+                      gh release upload "${{ needs.version.outputs.tag }}" "$file" --clobber
+                    else
+                      echo "Skipping $file (not a file)"
+                    fi
+                  done
