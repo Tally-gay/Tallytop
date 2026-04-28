@@ -112,3 +112,9 @@ jobs:
                   gh release create "${{ needs.version.outputs.tag }}" \
                     --generate-notes \
                     --latest
+
+            - name: Upload release assets
+              env:
+                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                  find artifacts -type f -exec gh release upload "${{ needs.version.outputs.tag }}" {} \;
