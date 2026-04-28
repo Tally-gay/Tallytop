@@ -1,7 +1,7 @@
 {
     "name": "tallytop",
     "desktopName": "tallytop",
-    "version": "3.2.0-tally.10",
+    "version": "3.2.0-tally.11",
     "private": true,
     "description": "Tallytop is a custom Discord desktop app",
     "keywords": [],
