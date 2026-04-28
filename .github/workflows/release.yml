@@ -91,9 +91,6 @@ jobs:
             - name: Run Electron Builder
               run: bun run electron-builder --${{ matrix.platform }}
 
-            - name: Create versionless files
-              run: bun run rename
-
             - name: Upload dist artifacts
               uses: actions/upload-artifact@v4
               with:
